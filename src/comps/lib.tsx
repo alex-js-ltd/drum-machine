@@ -10,14 +10,15 @@ const StepListUL = styled.ul({
   margin: 'auto',
   listStyle: 'none',
   padding: '0',
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: 'grid',
+  gridTemplateColumns: `repeat(16, 1fr)`,
+  gridGap: '1em',
 });
 
 const Step = styled.div({
   border: `1px solid ${colors.gray600}`,
   borderRadius: '4px',
-  width: '40px',
+  width: '100%',
   height: '60px',
 });
 
