@@ -1,4 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import { useState } from 'react';
+import { StepListUL, Step } from 'comps/lib';
 
 type Step = { id: number; on: 1 | 0 };
 
@@ -29,15 +31,22 @@ const App = () => {
   });
 
   return (
-    <div>
-      {state.steps.map(({ id, on }) => (
-        <div
-          key={id}
-          style={{ width: 10, height: 10, border: '1px solid blue' }}
-        >
-          {id}
-        </div>
-      ))}
+    <div
+      css={{
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <StepListUL>
+        {state.steps.map(({ id, on }) => (
+          <li key={id}>
+            <Step></Step>
+          </li>
+        ))}
+      </StepListUL>
     </div>
   );
 };
