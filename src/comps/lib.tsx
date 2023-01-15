@@ -15,11 +15,25 @@ const StepListUL = styled.ul({
   gridGap: '1em',
 });
 
-const Step = styled.div({
-  border: `1px solid ${colors.gray600}`,
-  borderRadius: '4px',
-  width: '100%',
-  height: '60px',
-});
+type StepVariant = { on: CSSObject; off: CSSObject };
+
+const stepVariants: StepVariant = {
+  on: {
+    border: `1px solid ${colors.white}`,
+  },
+  off: {
+    border: `1px solid ${colors.gray600}`,
+  },
+};
+
+const Step = styled.div<{ variant: keyof StepVariant }>(
+  {
+    border: `1px solid ${colors.gray600}`,
+    borderRadius: '4px',
+    width: '100%',
+    height: '60px',
+  },
+  ({ variant = 'off' }) => stepVariants[variant]
+);
 
 export { StepListUL, Step };

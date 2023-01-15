@@ -9,6 +9,7 @@ type State = { steps: Step[]; currentStep: number; playing: boolean };
 const App = () => {
   const [state, setState] = useState<State>({
     steps: [
+      { id: 0, on: 0 },
       { id: 1, on: 0 },
       { id: 2, on: 0 },
       { id: 3, on: 0 },
@@ -24,11 +25,26 @@ const App = () => {
       { id: 13, on: 0 },
       { id: 14, on: 0 },
       { id: 15, on: 0 },
-      { id: 16, on: 0 },
     ],
     currentStep: 0,
     playing: false,
   });
+
+  const setStep = (id: number) => {
+    const copySteps = [...state.steps];
+
+    const copyObj = { ...copySteps[id] };
+
+    if (copyObj.on === 0) {
+      copyObj.on = 1;
+    } else {
+      copyObj.on = 0;
+    }
+
+    copySteps[id] = copyObj;
+
+    setState((prev) => ({ ...prev, steps: copySteps }));
+  };
 
   return (
     <div
@@ -43,7 +59,7 @@ const App = () => {
       <StepListUL>
         {state.steps.map(({ id, on }) => (
           <li key={id}>
-            <Step></Step>
+            <Step variant={on ? 'on' : 'off'} onClick={() => setStep(id)} />
           </li>
         ))}
       </StepListUL>
