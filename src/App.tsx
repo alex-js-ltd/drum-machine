@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
-import WAAClock from 'waaclock';
 import { StepListUL, Step, CircleButton } from 'comps/lib';
+import WAAClock from 'waaclock';
 
 type Step = { id: number; on: 1 | 0 };
 
@@ -63,6 +63,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    if (!audioCtx) return;
     if (state.isPlaying) {
       clock.start();
       tickEvent = clock
@@ -79,11 +80,28 @@ const App = () => {
     const { currentStep, steps } = state;
     const newCurrentStep = currentStep + 1;
 
-    if (steps[newCurrentStep % steps.length]) {
+    if (steps[newCurrentStep % steps.length].on === 1) {
       triggerSound(audioCtx, deadline);
     }
 
     setState((prev) => ({ ...prev, currentStep: newCurrentStep }));
+  };
+
+  const triggerSound = (audioCtx: AudioContext, deadline: number) => {
+    const oscillator = audioCtx.createOscillator();
+    const amplifier = audioCtx.createGain();
+
+    oscillator.frequency.setValueAtTime(200, deadline);
+    oscillator.frequency.linearRampToValueAtTime(50, deadline + 0.15);
+    oscillator.start(deadline);
+
+    oscillator.connect(amplifier);
+    amplifier.gain.setValueAtTime(0, deadline);
+
+    amplifier.gain.linearRampToValueAtTime(1.0, deadline + 0.02);
+    amplifier.gain.linearRampToValueAtTime(0.0, deadline + 0.2);
+
+    amplifier.connect(audioCtx.destination);
   };
 
   return (
