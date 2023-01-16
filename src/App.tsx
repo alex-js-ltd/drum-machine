@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StepListUL, Step } from 'comps/lib';
+import WAAClock from 'waaclock';
 
 type Step = { id: number; on: 1 | 0 };
 
 type State = { steps: Step[]; currentStep: number; playing: boolean };
-
-const audioCtx = new AudioContext();
 
 const App = () => {
   const [state, setState] = useState<State>({
@@ -47,6 +46,14 @@ const App = () => {
 
     setState((prev) => ({ ...prev, steps: copySteps }));
   };
+
+  let audioCtx: AudioContext;
+  let clock: WAAClock;
+
+  useEffect(() => {
+    audioCtx = new AudioContext();
+    clock = new WAAClock(audioCtx);
+  }, []);
 
   return (
     <div
