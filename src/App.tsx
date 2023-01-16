@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
-import { StepListUL, Step } from 'comps/lib';
+import { StepListUL, Step, CircleButton } from 'comps/lib';
 import WAAClock from 'waaclock';
 
 type Step = { id: number; on: 1 | 0 };
 
-type State = { steps: Step[]; currentStep: number; playing: boolean };
+type State = { steps: Step[]; currentStep: number; isPlaying: boolean };
 
 const App = () => {
   const [state, setState] = useState<State>({
@@ -28,7 +28,7 @@ const App = () => {
       { id: 15, on: 0 },
     ],
     currentStep: 0,
-    playing: false,
+    isPlaying: false,
   });
 
   const setStep = (id: number) => {
@@ -55,6 +55,12 @@ const App = () => {
     clock = new WAAClock(audioCtx);
   }, []);
 
+  const handlePlay = () => {
+    if (!state.isPlaying) {
+      setState((prev) => ({ ...prev, isPlaying: true }));
+    }
+  };
+
   return (
     <div
       css={{
@@ -63,10 +69,10 @@ const App = () => {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         maxWidth: '840px',
       }}
     >
+      <CircleButton onClick={() => handlePlay()} />
       <StepListUL>
         {state.steps.map(({ id, on }) => (
           <li key={id}>

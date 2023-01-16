@@ -7,7 +7,7 @@ import { keyframes, CSSObject } from '@emotion/react';
 const StepListUL = styled.ul({
   padding: '1em',
   width: '100%',
-  margin: 'auto',
+  margin: '0 auto',
   listStyle: 'none',
   display: 'grid',
   gridTemplateColumns: `repeat(16, 1fr)`,
@@ -43,4 +43,20 @@ const Step = styled.div<{ variant: keyof StepVariant }>(
   ({ variant = 'off' }) => stepVariants[variant]
 );
 
-export { StepListUL, Step };
+const CircleButton = styled.button({
+  borderRadius: '30px',
+  padding: '0',
+  width: '40px',
+  height: '40px',
+  lineHeight: '1',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: colors.gray900,
+  color: colors.gray600,
+  border: `1px solid ${colors.gray600}`,
+  cursor: 'pointer',
+  margin: '1em',
+});
+
+export { StepListUL, Step, CircleButton };
