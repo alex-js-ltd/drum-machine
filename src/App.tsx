@@ -6,6 +6,8 @@ type Step = { id: number; on: 1 | 0 };
 
 type State = { steps: Step[]; currentStep: number; playing: boolean };
 
+const audioCtx = new AudioContext();
+
 const App = () => {
   const [state, setState] = useState<State>({
     steps: [
@@ -49,11 +51,13 @@ const App = () => {
   return (
     <div
       css={{
+        margin: '0 auto',
         width: '100%',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        maxWidth: '840px',
       }}
     >
       <StepListUL>

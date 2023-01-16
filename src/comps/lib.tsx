@@ -6,7 +6,6 @@ import { keyframes, CSSObject } from '@emotion/react';
 
 const StepListUL = styled.ul({
   padding: '1em',
-  maxWidth: '840px',
   width: '100%',
   margin: 'auto',
   listStyle: 'none',
