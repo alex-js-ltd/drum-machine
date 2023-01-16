@@ -47,14 +47,16 @@ const App = () => {
     setState((prev) => ({ ...prev, steps: copySteps }));
   };
 
-  let audioCtx: AudioContext;
+  const [audioCtx, setAudioCtx] = useState<AudioContext>();
   let clock: WAAClock;
   let tickEvent: WAAClock.Event | null;
 
   useEffect(() => {
-    audioCtx = new AudioContext();
-    clock = new WAAClock(audioCtx);
-  }, []);
+    console.log(audioCtx);
+    if (audioCtx) {
+      clock = new WAAClock(audioCtx);
+    }
+  }, [audioCtx]);
 
   const handlePlay = () => {
     if (!state.isPlaying) {
@@ -63,7 +65,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (!audioCtx) return;
+    if (!audioCtx || !clock) return;
     if (state.isPlaying) {
       clock.start();
       tickEvent = clock
@@ -80,7 +82,7 @@ const App = () => {
     const { currentStep, steps } = state;
     const newCurrentStep = currentStep + 1;
 
-    if (steps[newCurrentStep % steps.length].on === 1) {
+    if (steps[newCurrentStep % steps.length] && audioCtx) {
       triggerSound(audioCtx, deadline);
     }
 
@@ -116,6 +118,7 @@ const App = () => {
       }}
     >
       <CircleButton onClick={() => handlePlay()} />
+      <CircleButton onClick={() => setAudioCtx(new AudioContext())} />
       <StepListUL>
         {state.steps.map(({ id, on }) => (
           <li key={id}>
