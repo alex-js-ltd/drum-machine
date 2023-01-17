@@ -3,46 +3,22 @@ import { useState, useEffect } from 'react';
 import { StepListUL, Step, CircleButton } from 'comps/lib';
 import WAAClock from 'waaclock';
 
-type Step = { id: number; on: 1 | 0 };
+type Step = number;
+on: 1 | 0;
 
 type State = { steps: Step[]; currentStep: number; isPlaying: boolean };
 
 const App = () => {
   const [state, setState] = useState<State>({
-    steps: [
-      { id: 0, on: 0 },
-      { id: 1, on: 0 },
-      { id: 2, on: 0 },
-      { id: 3, on: 0 },
-      { id: 4, on: 0 },
-      { id: 5, on: 0 },
-      { id: 6, on: 0 },
-      { id: 7, on: 0 },
-      { id: 8, on: 0 },
-      { id: 9, on: 0 },
-      { id: 10, on: 0 },
-      { id: 11, on: 0 },
-      { id: 12, on: 0 },
-      { id: 13, on: 0 },
-      { id: 14, on: 0 },
-      { id: 15, on: 0 },
-    ],
+    steps: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     currentStep: 0,
     isPlaying: false,
   });
 
-  const setStep = (id: number) => {
+  const setStep = (index: number) => {
     const copySteps = [...state.steps];
 
-    const copyObj = { ...copySteps[id] };
-
-    if (copyObj.on === 0) {
-      copyObj.on = 1;
-    } else {
-      copyObj.on = 0;
-    }
-
-    copySteps[id] = copyObj;
+    copySteps[index] = state.steps[index] === 0 ? 1 : 0;
 
     setState((prev) => ({ ...prev, steps: copySteps }));
   };
@@ -120,9 +96,12 @@ const App = () => {
       <CircleButton onClick={() => handlePlay()} />
       <CircleButton onClick={() => setAudioCtx(new AudioContext())} />
       <StepListUL>
-        {state.steps.map(({ id, on }) => (
-          <li key={id}>
-            <Step variant={on ? 'on' : 'off'} onClick={() => setStep(id)} />
+        {state.steps.map((step, index) => (
+          <li key={index}>
+            <Step
+              variant={step === 1 ? 'on' : 'off'}
+              onClick={() => setStep(index)}
+            />
           </li>
         ))}
       </StepListUL>
